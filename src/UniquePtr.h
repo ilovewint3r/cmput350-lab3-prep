@@ -2,7 +2,6 @@
 #define UNIQUE_PTR_H
 
 #include <utility>
-#include <iostream>
 
 // Your implementation here
 template <typename T>
@@ -21,7 +20,7 @@ class UniquePtr{
         }
 
         // move constructor
-        UniquePtr(UniquePtr &&uniquePtr) : mPtr(nullptr){
+        UniquePtr(UniquePtr<T> &&uniquePtr) : mPtr(nullptr){
             T* temp = uniquePtr.release();
             reset(temp);
         }
@@ -32,12 +31,12 @@ class UniquePtr{
         }
 
         // get pointer using arrow operator
-        const T* operator->() const{
+        T* operator->() const{
             return mPtr;
         }
 
         // get pointer using function
-        const T* get() const{
+        T* get() const{
             return mPtr;
         }
 
@@ -70,7 +69,13 @@ class UniquePtr{
         }
 
         operator bool() const{
-            return mPtr == nullptr;
+            return mPtr != nullptr;
+        }
+
+        template <typename U>
+        UniquePtr(UniquePtr<U> &&uniquePtr) : mPtr(nullptr){
+            U* temp = uniquePtr.release();
+            reset(temp);
         }
 
     private:

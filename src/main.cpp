@@ -1,6 +1,14 @@
 #include "UniquePtr.h"
 #include <iostream>
 
+class A{
+    public:
+        int a;
+};
+
+class B : public A {
+};
+
 int main() {
     UniquePtr<int> ptr(new int(5));
     std::cout << "UniquePtr directly initialized with new int 5: " << *ptr << std::endl;
@@ -22,7 +30,7 @@ int main() {
     }
 
     ptr.reset();
-    if (ptr){
+    if (!ptr){
         std::cout << "Again another old pointer is correctly set to blank." << std::endl;
     }
 
@@ -35,5 +43,14 @@ int main() {
 
     auto useGet = moved.get();
     std::cout << "Dereferenced raw pointer from moved, should hold 123: " << *useGet << std::endl;
+
+    UniquePtr<B> bPtr = makeUnique<B>();
+    bPtr->a = 67;
+    UniquePtr<A> aPtr(std::move(bPtr));
+    std::cout << "Convert constructor result: " << aPtr->a << std::endl;
+    if (!bPtr){
+        std::cout << "bPtr correctly set to nullptr" << std::endl;
+    }
+
     return 0;
 }
