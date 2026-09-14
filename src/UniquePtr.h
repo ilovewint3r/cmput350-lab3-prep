@@ -2,6 +2,7 @@
 #define UNIQUE_PTR_H
 
 #include <utility>
+#include <iostream>
 
 // Your implementation here
 template <typename T>
@@ -20,7 +21,7 @@ class UniquePtr{
         }
 
         // move constructor
-        UniquePtr(UniquePtr &&uniquePtr){
+        UniquePtr(UniquePtr &&uniquePtr) : mPtr(nullptr){
             T* temp = uniquePtr.release();
             reset(temp);
         }
