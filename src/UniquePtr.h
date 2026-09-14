@@ -32,12 +32,12 @@ class UniquePtr{
         }
 
         // get pointer using arrow operator
-        T* operator->() const{
+        const T* operator->() const{
             return mPtr;
         }
 
         // get pointer using function
-        T* get() const{
+        const T* get() const{
             return mPtr;
         }
 
@@ -62,7 +62,11 @@ class UniquePtr{
         }
 
         void swap(UniquePtr<T>& other){
-            std::swap(this, other);
+            T* temp1 = other.release();
+            T* temp2 = release();
+            reset(temp1);
+            other.reset(temp2);
+
         }
 
         operator bool() const{
